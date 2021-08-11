@@ -20,6 +20,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Dto" />
+      <Folder Include="Events\Concrete" />
+      <Folder Include="Queries" />
       <Folder Include="Services\Responses\" />
     </ItemGroup>
 

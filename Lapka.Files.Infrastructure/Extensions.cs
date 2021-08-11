@@ -10,8 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Lapka.Files.Application.Events.Abstract;
 using Lapka.Files.Application.Services;
+using Lapka.Files.Core.ValueObjects;
 using Lapka.Files.Infrastructure.Exceptions;
+using Lapka.Files.Infrastructure.Options;
 using Lapka.Files.Infrastructure.Services;
+using Microsoft.Extensions.Configuration;
 
 
 namespace Lapka.Files.Infrastructure
@@ -41,12 +44,16 @@ namespace Lapka.Files.Infrastructure
 
             IServiceCollection services = builder.Services;
 
+            ServiceProvider provider = services.BuildServiceProvider();
+            IConfiguration configuration = provider.GetService<IConfiguration>();
 
+            MinioOptions minioOptions = new MinioOptions();
+            configuration.GetSection("minio").Bind(minioOptions);
+
+            services.AddSingleton(minioOptions);
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
-
             services.AddSingleton<IDomainToIntegrationEventMapper, DomainToIntegrationEventMapper>();
 
-            services.AddSingleton<IValueRepository, ValueRepository>();
             services.AddTransient<IEventProcessor, EventProcessor>();
             services.AddTransient<IMessageBroker, DummyMessageBroker>();
 
