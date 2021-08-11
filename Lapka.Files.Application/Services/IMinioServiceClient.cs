@@ -7,5 +7,6 @@ namespace Lapka.Files.Application.Services
     {
         Task AddAsync(Photo photo);
         Task DeleteAsync(string photoPath);
+        Task<byte[]> GetAsync(string path);
     }
 }

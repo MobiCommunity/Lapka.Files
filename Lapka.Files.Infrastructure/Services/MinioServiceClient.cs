@@ -1,4 +1,5 @@
 using System.IO;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using Lapka.Files.Application.Services;
 using Lapka.Files.Core.ValueObjects;
@@ -17,6 +18,20 @@ namespace Lapka.Files.Infrastructure.Services
         {
             _minioOptions = minioOptions;
             _client = new MinioClient(_minioOptions.Endpoint, _minioOptions.AccessKey, _minioOptions.SecretKey);
+        }
+
+        public async Task<byte[]> GetAsync(string path)
+        {
+            await MakeSureBucketExistAsync(_minioOptions.PetBucketName);
+
+            await using var ms = new MemoryStream();
+            
+            await _client.GetObjectAsync(_minioOptions.PetBucketName, path, stream =>
+            {
+                stream.CopyTo(ms);
+            });
+
+            return ms.ToArray();
         }
 
         public async Task AddAsync(Photo photo)
