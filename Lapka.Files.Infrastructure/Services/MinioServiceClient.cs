@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Lapka.Files.Application.Services;
 using Lapka.Files.Core.ValueObjects;
 using Lapka.Files.Infrastructure.Options;
-using Microsoft.Extensions.Configuration;
 using Minio;
 
 namespace Lapka.Files.Infrastructure.Services
