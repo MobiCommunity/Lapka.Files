@@ -13,8 +13,13 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Lapka.Files.Api.Attributes;
+using Lapka.Files.Api.gRPC.Controllers;
 using Lapka.Files.Application;
+using Lapka.Files.Application.Services;
+using Lapka.Files.Core.ValueObjects;
 using Lapka.Files.Infrastructure;
+using Lapka.Files.Infrastructure.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace Lapka.Files.Api
 {
@@ -26,16 +31,25 @@ namespace Lapka.Files.Api
         }
 
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).ConfigureServices(services =>
+            WebHost.CreateDefaultBuilder(args).ConfigureKestrel(options =>
+                {
+                    options.ListenAnyIP(5003, o => o.Protocols = HttpProtocols.Http1);
+                    options.ListenAnyIP(5013, o => o.Protocols = HttpProtocols.Http2);
+                }).ConfigureServices(services =>
                 {
                     services.AddControllers();
 
                     services.TryAddSingleton(new JsonSerializerFactory().GetSerializer());
+                    
+                    services.AddScoped<IMinioServiceClient, MinioServiceClient>();
 
                     services
                         .AddConvey()
                         .AddInfrastructure()
                         .AddApplication();
+
+                    AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+                    services.AddGrpc();
 
                     services.AddSwaggerGen(c =>
                     {
@@ -43,7 +57,7 @@ namespace Lapka.Files.Api
                         c.SwaggerDoc("v1", new OpenApiInfo
                         {
                             Version = "v1",
-                            Title = "lapka.files Microservice",
+                            Title = "Files Microservice",
                             Description = ""
                         });
                         string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -62,14 +76,15 @@ namespace Lapka.Files.Api
                         .UseConvey()
                         .UseInfrastructure()
                         .UseRouting()
-                        .UseSwagger(c => { c.RouteTemplate = "api/lapka.files/swagger/{documentname}/swagger.json"; })
+                        .UseSwagger(c => { c.RouteTemplate = "api/files/swagger/{documentname}/swagger.json"; })
                         .UseSwaggerUI(c =>
                         {
-                            c.SwaggerEndpoint("/api/lapka.files/swagger/v1/swagger.json", "My API V1");
-                            c.RoutePrefix = "api/lapka.files/swagger";
+                            c.SwaggerEndpoint("/api/files/swagger/v1/swagger.json", "My API V1");
+                            c.RoutePrefix = "api/files/swagger";
                         })
                         .UseEndpoints(e =>
                         {
+                            e.MapGrpcService<GrpcPhotoController>();
                             e.MapControllers();
                             e.Map("ping", async ctx => { await ctx.Response.WriteAsync("Alive"); });
                         });
