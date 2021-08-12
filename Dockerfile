@@ -14,9 +14,9 @@ RUN dotnet publish Lapka.Files.Api -c release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build /app/out .
-ENV ASPNETCORE_URLS http://*:5001
-ENV ASPNETCORE_ENVIRONMENT kubernetes
+ENV ASPNETCORE_URLS http://*:5003
+ENV ASPNETCORE_ENVIRONMENT docker
 
-EXPOSE 5001
+EXPOSE 5003
 
 ENTRYPOINT dotnet Lapka.Files.Api.dll
