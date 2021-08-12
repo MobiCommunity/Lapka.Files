@@ -19,11 +19,9 @@ namespace Lapka.Files.Api.Controllers
         
         [HttpGet("{path}")]
         public async Task<IActionResult> Get(string path)
-        {
-            return Ok(await _queryDispatcher.QueryAsync(new GetPhoto
+            => Ok(await _queryDispatcher.QueryAsync(new GetPhoto
             {
                 Path = path
             }));
-        }
     }
 }

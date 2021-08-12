@@ -33,8 +33,8 @@ namespace Lapka.Files.Api
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args).ConfigureKestrel(options =>
                 {
-                    options.ListenAnyIP(5001, o => o.Protocols = HttpProtocols.Http1);
-                    options.ListenAnyIP(5011, o => o.Protocols = HttpProtocols.Http2);
+                    options.ListenAnyIP(5003, o => o.Protocols = HttpProtocols.Http1);
+                    options.ListenAnyIP(5013, o => o.Protocols = HttpProtocols.Http2);
                 }).ConfigureServices(services =>
                 {
                     services.AddControllers();
