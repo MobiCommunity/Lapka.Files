@@ -15,7 +15,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build /app/out .
 ENV ASPNETCORE_URLS http://*:5003
-ENV ASPNETCORE_ENVIRONMENT docker
+ENV ASPNETCORE_ENVIRONMENT Docker
 
 EXPOSE 5003
 EXPOSE 5013
