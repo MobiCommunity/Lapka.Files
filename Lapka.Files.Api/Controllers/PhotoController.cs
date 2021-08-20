@@ -18,7 +18,7 @@ namespace Lapka.Files.Api.Controllers
         {
             _queryDispatcher = queryDispatcher;
         }
-
+        
         [HttpGet("{path}")]
         public async Task<IActionResult> Get(string path)
         {
