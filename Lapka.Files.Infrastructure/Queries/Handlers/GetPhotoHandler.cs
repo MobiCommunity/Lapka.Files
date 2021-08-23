@@ -20,7 +20,7 @@ namespace Lapka.Files.Infrastructure.Queries.Handlers
         {
             PhotoDto photoDto = new PhotoDto
             {
-                Content = await _minioServiceClient.GetAsync(query.Path)
+                Content = await _minioServiceClient.GetAsync(query.Path, query.BucketName)
             };
 
             return photoDto;

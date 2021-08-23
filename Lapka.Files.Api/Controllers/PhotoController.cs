@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Convey.CQRS.Queries;
 using Lapka.Files.Application.Dto;
 using Lapka.Files.Application.Queries;
+using Lapka.Files.Core.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lapka.Files.Api.Controllers
@@ -20,11 +21,12 @@ namespace Lapka.Files.Api.Controllers
         }
 
         [HttpGet("{path}")]
-        public async Task<IActionResult> Get(string path)
+        public async Task<IActionResult> Get(string path, BucketName bucketName)
         {
             PhotoDto photoDto = await _queryDispatcher.QueryAsync(new GetPhoto
             {
-                Path = path
+                Path = path,
+                BucketName = bucketName
             });
             
             return File(photoDto.Content, "image/png");

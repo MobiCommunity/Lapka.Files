@@ -16,7 +16,7 @@ namespace Lapka.Files.Application.Commands.Handlers
         
         public async Task HandleAsync(DeletePhoto command)
         {
-            await _minioServiceClient.DeleteAsync(command.Path);
+            await _minioServiceClient.DeleteAsync(command.Path, command.BucketName);
         }
     }
 }

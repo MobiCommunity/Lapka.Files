@@ -22,7 +22,7 @@ namespace Lapka.Files.Application.Commands.Handlers
 
             Photo photo = new Photo(command.Path, photoStream);
             
-            await _minioServiceClient.AddAsync(photo);
+            await _minioServiceClient.AddAsync(photo, command.BucketName);
         }
     }
 }
