@@ -21,6 +21,12 @@ namespace Lapka.Files.Infrastructure.Services
             return photo?.AsDocument();
         }
 
+        public async Task<Photo> GetAsync(string photoPath)
+        {
+            PhotoDocument photo = await _repository.GetAsync(x => x.PhotoPath == photoPath);
+            return photo?.AsDocument();        
+        }
+
         public async Task AddAsync(Guid photoId, string photoPath)
         {
             await _repository.AddAsync(new PhotoDocument(photoId, photoPath));
