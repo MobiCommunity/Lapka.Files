@@ -8,7 +8,7 @@ services:
     ports:
       - 8500:8500
     networks:
-      - template
+      - lapka
 
   fabio:
     image: fabiolb/fabio:latest
@@ -20,7 +20,31 @@ services:
       - 9998:9998
       - 9999:9999
     networks:
-      - template
+      - lapka
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    volumes:
+      - /minio/data:/data
+    command: server --console-address ":9001" /data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - lapka
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    container_name: elastic
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elasticsearch:/data
+    ports:
+      - 9200:9200
+    networks:
+      - lapka
 
   mongo:
     image: mongo
@@ -31,7 +55,7 @@ services:
     volumes:
       - mongo:/data/db
     networks:
-      - template
+      - lapka
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -42,7 +66,7 @@ services:
       - 15672:15672
       - 15692:15692
     networks:
-      - template
+      - lapka
 
   seq:
     image: datalust/seq
@@ -54,8 +78,8 @@ services:
       - 5341:80
 
 networks:
-  amzn:
-    name: template
+  lapka:
+    name: lapka
 
 volumes:
   consul:
@@ -65,4 +89,8 @@ volumes:
   rabbitmq:
     driver: local
   seq:
+    driver: local
+  elasticsearch:
+    driver: local
+  minio:
     driver: local

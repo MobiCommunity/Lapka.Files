@@ -20,12 +20,12 @@ namespace Lapka.Files.Api.Controllers
             _queryDispatcher = queryDispatcher;
         }
         
-        [HttpGet("{path}")]
-        public async Task<IActionResult> Get(string path, BucketName bucketName)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> Get(Guid id, BucketName bucketName)
         {
             PhotoDto photoDto = await _queryDispatcher.QueryAsync(new GetPhoto
             {
-                Path = path,
+                Id = id,
                 BucketName = bucketName
             });
             
