@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Convey.CQRS.Queries;
 using Convey.Persistence.MongoDB;
 using Lapka.Files.Application.Dto;
+using Lapka.Files.Application.Exceptions;
 using Lapka.Files.Application.Queries;
 using Lapka.Files.Application.Services;
 using Lapka.Files.Core.ValueObjects;
@@ -24,12 +25,24 @@ namespace Lapka.Files.Infrastructure.Queries.Handlers
         public async Task<PhotoDto> HandleAsync(GetPhoto query)
         {
             Photo photo = await _repository.GetAsync(query.Id);
-            
-            PhotoDto photoDto = new PhotoDto
+            if (photo == null)
             {
-                Content = await _minioServiceClient.GetAsync(photo.Path, query.BucketName)
-            };
+                throw new PhotoNotFoundException(query.Id.ToString());
+            }
 
+            PhotoDto photoDto = new PhotoDto();
+            try
+            {
+                photoDto = new PhotoDto
+                {
+                    Content = await _minioServiceClient.GetAsync(photo.Path, query.BucketName)
+                };
+            }
+            catch(Minio.Exceptions.ObjectNotFoundException)
+            {
+                throw new PhotoNotFoundException(query.Id.ToString());
+            }
+            
             return photoDto;
         }
     }
