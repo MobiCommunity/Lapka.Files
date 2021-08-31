@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Security.AccessControl;
 using System.Threading.Tasks;
@@ -5,6 +6,7 @@ using Lapka.Files.Application.Services;
 using Lapka.Files.Core.ValueObjects;
 using Lapka.Files.Infrastructure.Options;
 using Minio;
+using Minio.Exceptions;
 
 namespace Lapka.Files.Infrastructure.Services
 {
@@ -19,13 +21,21 @@ namespace Lapka.Files.Infrastructure.Services
             _client = new MinioClient(_minioOptions.Endpoint, _minioOptions.AccessKey, _minioOptions.SecretKey);
         }
 
-        public async Task<byte[]> GetAsync(string path)
+        public async Task<byte[]> GetAsync(string path, BucketName bucket)
         {
-            await MakeSureBucketExistAsync(_minioOptions.PetBucketName);
-
-            await using var ms = new MemoryStream();
+            string bucketName = bucket switch
+            {
+                BucketName.PetPhotos => _minioOptions.PetBucketName,
+                BucketName.ShelterPhotos => _minioOptions.ShelterBucketName,
+                BucketName.UserPhotos => _minioOptions.UserBucketName,
+                _ => throw new InvalidBucketNameException(bucket.ToString(), "Invalid bucket name")
+            };
             
-            await _client.GetObjectAsync(_minioOptions.PetBucketName, path, stream =>
+            await MakeSureBucketExistAsync(bucketName);
+
+            await using MemoryStream ms = new MemoryStream();
+            
+            await _client.GetObjectAsync(bucketName, path, stream =>
             {
                 stream.CopyTo(ms);
             });
@@ -33,19 +43,35 @@ namespace Lapka.Files.Infrastructure.Services
             return ms.ToArray();
         }
 
-        public async Task AddAsync(Photo photo)
+        public async Task AddAsync(Photo photo, BucketName bucket)
         {
-            await MakeSureBucketExistAsync(_minioOptions.PetBucketName);
+            string bucketName = bucket switch
+            {
+                BucketName.PetPhotos => _minioOptions.PetBucketName,
+                BucketName.ShelterPhotos => _minioOptions.ShelterBucketName,
+                BucketName.UserPhotos => _minioOptions.UserBucketName,
+                _ => throw new InvalidBucketNameException(bucket.ToString(), "Invalid bucket name")
+            };
+            
+            await MakeSureBucketExistAsync(bucketName);
 
-            await _client.PutObjectAsync(_minioOptions.PetBucketName, photo.Path, photo.Content,
+            await _client.PutObjectAsync(bucketName, photo.Path, photo.Content,
                 photo.Content.Length);
         }
 
-        public async Task DeleteAsync(string photoPath)
+        public async Task DeleteAsync(string photoPath, BucketName bucket)
         {
-            await MakeSureBucketExistAsync(_minioOptions.PetBucketName);
+            string bucketName = bucket switch
+            {
+                BucketName.PetPhotos => _minioOptions.PetBucketName,
+                BucketName.ShelterPhotos => _minioOptions.ShelterBucketName,
+                BucketName.UserPhotos => _minioOptions.UserBucketName,
+                _ => throw new InvalidBucketNameException(bucket.ToString(), "Invalid bucket name")
+            };
+            
+            await MakeSureBucketExistAsync(bucketName);
 
-            await _client.RemoveObjectAsync(_minioOptions.PetBucketName, photoPath);
+            await _client.RemoveObjectAsync(bucketName, photoPath);
         }
 
         private async Task MakeSureBucketExistAsync(string bucketName)

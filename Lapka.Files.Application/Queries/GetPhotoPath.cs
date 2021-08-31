@@ -5,9 +5,9 @@ using Lapka.Files.Core.ValueObjects;
 
 namespace Lapka.Files.Application.Queries
 {
-    public class GetPhoto : IQuery<PhotoDto>
+    public class GetPhotoPath : IQuery<PhotoPathDto>
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public BucketName BucketName { get; set; }
     }
 }

@@ -9,5 +9,7 @@ namespace Lapka.Files.Infrastructure.Options
         public string SecretKey { get; set; }
 
         public string PetBucketName { get; set; }
+        public string UserBucketName { get; set; }
+        public string ShelterBucketName { get; set; }
     }
 }

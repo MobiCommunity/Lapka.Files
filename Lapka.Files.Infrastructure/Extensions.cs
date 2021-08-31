@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Convey.Persistence.MongoDB;
 using Lapka.Files.Application.Events.Abstract;
 using Lapka.Files.Application.Services;
 using Lapka.Files.Core.ValueObjects;
+using Lapka.Files.Infrastructure.Documents;
 using Lapka.Files.Infrastructure.Exceptions;
 using Lapka.Files.Infrastructure.Options;
 using Lapka.Files.Infrastructure.Services;
@@ -29,8 +31,9 @@ namespace Lapka.Files.Infrastructure
                 .AddHttpClient()
                 .AddErrorHandler<ExceptionToResponseMapper>()
                 .AddExceptionToMessageMapper<ExceptionToMessageMapper>()
+                .AddMongo()
+                .AddMongoRepository<PhotoDocument, Guid>("photos")
                 // .AddRabbitMq()
-                // .AddMongo()
                 // .AddConsul()
                 // .AddFabio()
                 // .AddMessageOutbox()
@@ -54,6 +57,7 @@ namespace Lapka.Files.Infrastructure
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
             services.AddSingleton<IDomainToIntegrationEventMapper, DomainToIntegrationEventMapper>();
 
+            services.AddSingleton<IPhotoRepository, PhotoRepository>();
             services.AddTransient<IEventProcessor, EventProcessor>();
             services.AddTransient<IMessageBroker, DummyMessageBroker>();
 

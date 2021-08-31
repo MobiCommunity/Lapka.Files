@@ -6,8 +6,4 @@
         <NoWarn>$(NoWarn);1591</NoWarn>
         <ProjectGuid>{8760038D-DDD5-4D0D-900D-41D61B5448CA}</ProjectGuid>
     </PropertyGroup>
-
-       <ItemGroup>
-         <Folder Include="Events\Concrete" />
-       </ItemGroup>
 </Project>
