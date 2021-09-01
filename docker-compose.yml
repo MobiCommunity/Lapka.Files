@@ -1,6 +1,37 @@
 version: '3.7'
 
 services:
+
+  lapka_identity:
+    image: mobicommunity/lapkaidentity:1.0
+    container_name: lapka_identity
+    restart: unless-stopped
+    ports:
+      - 5001:5001
+      - 5011:5011
+    networks:
+      - lapka
+        
+  lapka_pets:
+    image: mobicommunity/lapkapets:1.0
+    container_name: lapka_pets
+    restart: unless-stopped
+    ports:
+      - 5002:5002
+      - 5012:5012
+    networks:
+      - lapka
+
+  lapka_files:
+    image: mobicommunity/lapkafiles:1.0
+    container_name: lapka_files
+    restart: unless-stopped
+    ports:
+      - 5003:5003
+      - 5013:5013
+    networks:
+      - lapka
+        
   consul:
     image: consul:latest
     container_name: consul
@@ -24,7 +55,7 @@ services:
 
   minio:
     image: minio/minio
-    container_name: minio
+    container_name: minio_lapka
     volumes:
       - /minio/data:/data
     command: server --console-address ":9001" /data
@@ -47,8 +78,8 @@ services:
       - lapka
 
   mongo:
-    image: mongo
-    container_name: mongo
+    image: mongo:4.4.8
+    container_name: mongo_lapka
     restart: unless-stopped
     ports:
       - 27017:27017
@@ -59,7 +90,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
+    container_name: rabbitmq_lapka
     restart: unless-stopped
     ports:
       - 5672:5672
@@ -70,7 +101,7 @@ services:
 
   seq:
     image: datalust/seq
-    container_name: seq
+    container_name: seq_lapka
     restart: unless-stopped
     environment:
       - ACCEPT_EULA=Y
