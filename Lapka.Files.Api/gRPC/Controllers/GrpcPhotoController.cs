@@ -10,7 +10,7 @@ using Lapka.Files.Application.Queries;
 
 namespace Lapka.Files.Api.gRPC.Controllers
 {
-    public class GrpcPhotoController : Photo.PhotoBase
+    public class GrpcPhotoController : PhotoProto.PhotoProtoBase
     {
         private readonly IQueryDispatcher _queryDispatcher;
         private readonly ICommandDispatcher _commandDispatcher;
