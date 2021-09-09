@@ -129,4 +129,4 @@ volumes:
   elasticsearch:
     driver: local
   minio:
-    driver: local
+    driver: local 
