@@ -5,11 +5,11 @@ namespace Lapka.Files.Core.Events.Concrete
 {
     public class PhotoCreated : IDomainEvent
     {
-        public Photo photo { get; }
+        public Photo Photo { get; }
 
         public PhotoCreated(Photo photo)
         {
-            this.photo = photo;
+            Photo = photo;
         }
     }
 }

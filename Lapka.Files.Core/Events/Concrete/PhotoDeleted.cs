@@ -5,11 +5,11 @@ namespace Lapka.Files.Core.Events.Concrete
 {
     public class PhotoDeleted : IDomainEvent
     {
-        public Photo photo { get; }
+        public Photo Photo { get; }
 
         public PhotoDeleted(Photo photo)
         {
-            this.photo = photo;
+            Photo = photo;
         }
     }
 }
