@@ -1,14 +1,12 @@
-using System;
 using System.IO;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
-using Lapka.Files.Application.Services;
+using Lapka.Files.Application.Services.Minios;
 using Lapka.Files.Core.ValueObjects;
-using Lapka.Files.Infrastructure.Options;
+using Lapka.Files.Infrastructure.Minios.Options;
 using Minio;
 using Minio.Exceptions;
 
-namespace Lapka.Files.Infrastructure.Services
+namespace Lapka.Files.Infrastructure.Minios.Services
 {
     public class MinioServiceClient : IMinioServiceClient
     {

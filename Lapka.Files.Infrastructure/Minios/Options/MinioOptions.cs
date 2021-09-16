@@ -1,4 +1,4 @@
-namespace Lapka.Files.Infrastructure.Options
+namespace Lapka.Files.Infrastructure.Minios.Options
 {
     public class MinioOptions
     {

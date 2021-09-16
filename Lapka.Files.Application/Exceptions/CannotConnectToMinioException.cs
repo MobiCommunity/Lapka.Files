@@ -2,12 +2,12 @@ using System;
 
 namespace Lapka.Files.Application.Exceptions
 {
-    public class CannotConnetToMinioException : AppException
+    public class CannotConnectToMinioException : AppException
     {
         public Exception Exception { get; }
         public string ErrorMessage { get; }
 
-        public CannotConnetToMinioException(Exception exception, string errorMessage) : base(
+        public CannotConnectToMinioException(Exception exception, string errorMessage) : base(
             $"Cannot connect to minio with message: {errorMessage} and error: {exception.Message}")
         {
             Exception = exception;

@@ -16,8 +16,10 @@ using Lapka.Files.Api.Attributes;
 using Lapka.Files.Api.gRPC.Controllers;
 using Lapka.Files.Application;
 using Lapka.Files.Application.Services;
+using Lapka.Files.Application.Services.Minios;
 using Lapka.Files.Core.ValueObjects;
 using Lapka.Files.Infrastructure;
+using Lapka.Files.Infrastructure.Minios.Services;
 using Lapka.Files.Infrastructure.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
