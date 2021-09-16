@@ -1,8 +1,7 @@
-using System;
 using System.Threading.Tasks;
 using Lapka.Files.Core.ValueObjects;
 
-namespace Lapka.Files.Application.Services
+namespace Lapka.Files.Application.Services.Minios
 {
     public interface IMinioServiceClient
     {

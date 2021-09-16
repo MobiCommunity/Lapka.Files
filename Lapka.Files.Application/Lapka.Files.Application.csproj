@@ -21,7 +21,6 @@
 
     <ItemGroup>
       <Folder Include="Events\Concrete" />
-      <Folder Include="Services\Responses\" />
     </ItemGroup>
 
 </Project>

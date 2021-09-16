@@ -1,7 +1,7 @@
 using System;
 using Convey.Types;
 
-namespace Lapka.Files.Infrastructure.Documents
+namespace Lapka.Files.Infrastructure.Mongo.Documents
 {
     public class PhotoDocument : IIdentifiable<Guid>
     {

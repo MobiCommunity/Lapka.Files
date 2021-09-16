@@ -11,12 +11,18 @@ using System;
 using Convey.Persistence.MongoDB;
 using Lapka.Files.Application.Events.Abstract;
 using Lapka.Files.Application.Services;
+using Lapka.Files.Application.Services.Elastic;
+using Lapka.Files.Application.Services.Photos;
 using Lapka.Files.Core.ValueObjects;
-using Lapka.Files.Infrastructure.Documents;
+using Lapka.Files.Infrastructure.Elastic.Options;
+using Lapka.Files.Infrastructure.Elastic.Services;
 using Lapka.Files.Infrastructure.Exceptions;
-using Lapka.Files.Infrastructure.Options;
+using Lapka.Files.Infrastructure.Minios.Options;
+using Lapka.Files.Infrastructure.Mongo.Documents;
+using Lapka.Files.Infrastructure.Mongo.Repositories;
 using Lapka.Files.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
+using Nest;
 
 
 namespace Lapka.Files.Infrastructure
@@ -52,14 +58,23 @@ namespace Lapka.Files.Infrastructure
 
             MinioOptions minioOptions = new MinioOptions();
             configuration.GetSection("minio").Bind(minioOptions);
-
             services.AddSingleton(minioOptions);
+            
+            ElasticSearchOptions elasticSearchOptions = new ElasticSearchOptions();
+            configuration.GetSection("elasticSearch").Bind(elasticSearchOptions);
+            services.AddSingleton(elasticSearchOptions);
+            ConnectionSettings elasticConnectionSettings = new ConnectionSettings(new Uri(elasticSearchOptions.Url));
+            
             services.AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>();
             services.AddSingleton<IDomainToIntegrationEventMapper, DomainToIntegrationEventMapper>();
-
             services.AddSingleton<IPhotoRepository, PhotoRepository>();
+            services.AddSingleton<IElasticClient>(new ElasticClient(elasticConnectionSettings));
+
+            services.AddTransient<IPhotoElasticsearchUpdater, PhotoElasticsearchUpdater>();
             services.AddTransient<IEventProcessor, EventProcessor>();
             services.AddTransient<IMessageBroker, DummyMessageBroker>();
+            
+            services.AddHostedService<ElasticSearchSeeder>();
 
             builder.Services.Scan(s => s.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
                 .AddClasses(c => c.AssignableTo(typeof(IDomainEventHandler<>)))

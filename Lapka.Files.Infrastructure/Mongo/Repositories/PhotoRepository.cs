@@ -2,10 +2,11 @@ using System;
 using System.Threading.Tasks;
 using Convey.Persistence.MongoDB;
 using Lapka.Files.Application.Services;
+using Lapka.Files.Application.Services.Photos;
 using Lapka.Files.Core.ValueObjects;
-using Lapka.Files.Infrastructure.Documents;
+using Lapka.Files.Infrastructure.Mongo.Documents;
 
-namespace Lapka.Files.Infrastructure.Services
+namespace Lapka.Files.Infrastructure.Mongo.Repositories
 {
     public class PhotoRepository : IPhotoRepository
     {
@@ -18,18 +19,18 @@ namespace Lapka.Files.Infrastructure.Services
         public async Task<Photo> GetAsync(Guid photoId)
         {
             PhotoDocument photo = await _repository.GetAsync(x => x.Id == photoId);
-            return photo?.AsDocument();
+            return photo?.AsBusiness();
         }
 
         public async Task<Photo> GetAsync(string photoPath)
         {
             PhotoDocument photo = await _repository.GetAsync(x => x.PhotoPath == photoPath);
-            return photo?.AsDocument();        
+            return photo?.AsBusiness();        
         }
 
-        public async Task AddAsync(Guid photoId, string photoPath)
+        public async Task AddAsync(Photo photo)
         {
-            await _repository.AddAsync(new PhotoDocument(photoId, photoPath));
+            await _repository.AddAsync(photo.AsDocument());
         }
 
         public async Task DeleteAsync(Photo photo)
