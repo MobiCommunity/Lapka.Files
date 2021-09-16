@@ -49,7 +49,7 @@ namespace Lapka.Files.Application.Commands.Handlers
             }
             catch (Exception ex)
             {
-                throw new CannotConnetToMinioException(ex, "Error at adding a photo");
+                throw new CannotConnectToMinioException(ex, "Error at adding a photo");
             }
             
             return photo;
