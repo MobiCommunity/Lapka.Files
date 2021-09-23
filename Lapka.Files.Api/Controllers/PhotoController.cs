@@ -5,6 +5,7 @@ using Convey.CQRS.Queries;
 using Lapka.Files.Application.Dto;
 using Lapka.Files.Application.Queries;
 using Lapka.Files.Core.ValueObjects;
+using Lapka.Files.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lapka.Files.Api.Controllers
@@ -20,12 +21,15 @@ namespace Lapka.Files.Api.Controllers
             _queryDispatcher = queryDispatcher;
         }
         
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> Get(Guid id, BucketName bucketName)
+        [HttpGet("{photoPath}")]
+        public async Task<IActionResult> Get(string photoPath, BucketName bucketName)
         {
+            Guid userId = await HttpContext.AuthenticateUsingJwtGetUserIdAsync();
+            
             PhotoDto photoDto = await _queryDispatcher.QueryAsync(new GetPhoto
             {
-                Id = id,
+                PhotoPath = photoPath,
+                UserId = userId,
                 BucketName = bucketName
             });
             

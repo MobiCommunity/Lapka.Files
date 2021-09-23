@@ -1,3 +1,4 @@
+using Lapka.Files.Core.Entities;
 using Lapka.Files.Core.Events.Abstract;
 using Lapka.Files.Core.ValueObjects;
 

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Lapka.Files.Core.Entities;
 using Lapka.Files.Core.ValueObjects;
 
 namespace Lapka.Files.Application.Services.Elastic

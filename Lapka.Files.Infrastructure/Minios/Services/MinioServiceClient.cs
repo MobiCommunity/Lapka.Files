@@ -1,6 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Lapka.Files.Application.Services.Minios;
+using Lapka.Files.Core.Entities;
 using Lapka.Files.Core.ValueObjects;
 using Lapka.Files.Infrastructure.Minios.Options;
 using Minio;

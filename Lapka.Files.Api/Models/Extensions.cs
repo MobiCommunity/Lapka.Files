@@ -26,27 +26,5 @@ namespace Lapka.Files.Api.Models
                 _ => throw new InvalidBucketNameException(bucket.ToString())
             };
         }
-        
-        public static BucketName AsValueObject(this SetExternalPhotoRequest.Types.Bucket bucket)
-        {
-            return bucket switch
-            {
-                SetExternalPhotoRequest.Types.Bucket.PetPhotos => BucketName.PetPhotos,
-                SetExternalPhotoRequest.Types.Bucket.ShelterPhotos => BucketName.ShelterPhotos,
-                SetExternalPhotoRequest.Types.Bucket.UserPhotos => BucketName.UserPhotos,
-                _ => throw new InvalidBucketNameException(bucket.ToString())
-            };
-        }
-        
-        public static BucketName AsValueObject(this GetPhotoPathRequest.Types.Bucket bucket)
-        {
-            return bucket switch
-            {
-                GetPhotoPathRequest.Types.Bucket.PetPhotos => BucketName.PetPhotos,
-                GetPhotoPathRequest.Types.Bucket.ShelterPhotos => BucketName.ShelterPhotos,
-                GetPhotoPathRequest.Types.Bucket.UserPhotos => BucketName.UserPhotos,
-                _ => throw new InvalidBucketNameException(bucket.ToString())
-            };
-        }
     }
 }

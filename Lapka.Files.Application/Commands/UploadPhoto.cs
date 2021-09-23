@@ -7,14 +7,16 @@ namespace Lapka.Files.Application.Commands
 {
     public class UploadPhoto : ICommand
     {
-        public string Id { get; }
-        public string Name { get; set; }
+        public string UserId { get; }
+        public bool IsPublic { get; }
+        public string Name { get; }
         public byte[] Photo { get; }
         public BucketName BucketName { get; }
 
-        public UploadPhoto(string id, string name, byte[] photo, BucketName bucketName)
+        public UploadPhoto(string userId, bool isPublic, string name, byte[] photo, BucketName bucketName)
         {
-            Id = id;
+            UserId = userId;
+            IsPublic = isPublic;
             Name = name;
             Photo = photo;
             BucketName = bucketName;
