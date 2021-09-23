@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lapka.Files.Application.Services;
 using Lapka.Files.Application.Services.Elastic;
+using Lapka.Files.Core.Entities;
 using Lapka.Files.Core.ValueObjects;
 using Lapka.Files.Infrastructure.Elastic.Options;
 using Lapka.Files.Infrastructure.Mongo.Documents;
@@ -39,7 +40,7 @@ namespace Lapka.Files.Infrastructure.Elastic.Services
 
         public async Task DeleteDataAsync(Photo photo)
         {
-            DeleteResponse response = await _elasticClient.DeleteAsync<PhotoDocument>(photo.Id.Value,
+            DeleteResponse response = await _elasticClient.DeleteAsync<PhotoDocument>(photo.Path,
                 x => x.Index(_elasticSearchOptions.Aliases.Photos));
 
             if (!response.IsValid)

@@ -6,12 +6,14 @@ namespace Lapka.Files.Application.Commands
 {
     public class DeletePhoto : ICommand
     {
-        public string Id { get; }
+        public string PhotoPath { get; }
+        public string UserId { get; }
         public BucketName BucketName { get; }
 
-        public DeletePhoto(string id, BucketName bucketName)
+        public DeletePhoto(string photoPath, string userId, BucketName bucketName)
         {
-            Id = id;
+            PhotoPath = photoPath;
+            UserId = userId;
             BucketName = bucketName;
         }
     }

@@ -22,37 +22,51 @@ namespace Lapka.Files.Infrastructure.Exceptions
                     _ => new ExceptionResponse(new {code = ex.Code, reason = ex.Message},
                         HttpStatusCode.BadRequest),
                 },
-                
+
                 AppException ex => ex switch
                 {
-                    CannotConnectToMinioException cannotConnectToMinioException => 
+                    CannotConnectToMinioException cannotConnectToMinioException =>
                         new ExceptionResponse(new
-                        {
-                            code = cannotConnectToMinioException.Code,
-                            reason = cannotConnectToMinioException.Message
-                        },
-                        HttpStatusCode.InternalServerError),
-                    InvalidBucketNameException invalidBucketNameException => 
+                            {
+                                code = cannotConnectToMinioException.Code,
+                                reason = cannotConnectToMinioException.Message
+                            },
+                            HttpStatusCode.InternalServerError),
+                    InvalidBucketNameException invalidBucketNameException =>
                         new ExceptionResponse(new
                             {
                                 code = invalidBucketNameException.Code,
                                 reason = invalidBucketNameException.Message
                             },
                             HttpStatusCode.BadRequest),
-                    InvalidPhotoIdException invalidPhotoIdException => 
+                    InvalidPhotoIdException invalidPhotoIdException =>
                         new ExceptionResponse(new
                             {
                                 code = invalidPhotoIdException.Code,
                                 reason = invalidPhotoIdException.Message
                             },
                             HttpStatusCode.BadRequest),
-                    PhotoNotFoundException photoNotFoundException => 
+                    PhotoNotFoundException photoNotFoundException =>
                         new ExceptionResponse(new
                             {
                                 code = photoNotFoundException.Code,
                                 reason = photoNotFoundException.Message
                             },
                             HttpStatusCode.BadRequest),
+                    InvalidUserIdException invalidUserIdException =>
+                        new ExceptionResponse(new
+                            {
+                                code = invalidUserIdException.Code,
+                                reason = invalidUserIdException.Message
+                            },
+                            HttpStatusCode.BadRequest),
+                    PhotoIsPrivateException photoIsPrivateException =>
+                        new ExceptionResponse(new
+                            {
+                                code = photoIsPrivateException.Code,
+                                reason = photoIsPrivateException.Message
+                            },
+                            HttpStatusCode.Forbidden),
                     _ => new ExceptionResponse(
                         new
                         {

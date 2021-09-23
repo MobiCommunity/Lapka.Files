@@ -7,7 +7,8 @@ namespace Lapka.Files.Application.Queries
 {
     public class GetPhoto : IQuery<PhotoDto>
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
+        public string PhotoPath { get; set; }
         public BucketName BucketName { get; set; }
     }
 }
