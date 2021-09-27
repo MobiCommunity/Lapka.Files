@@ -25,10 +25,8 @@ namespace Lapka.Files.Api.Controllers
         /// <summary>
         /// Gets photo by path.
         /// </summary>
-        /// <returns>Photo</returns>
-        /// <response code="200">If successfully got photo, returns photo as image</response>
-        /// <response code="404">If photo was not found</response>
         [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
         [HttpGet("{photoPath}")]
         public async Task<IActionResult> Get(string photoPath, BucketName bucketName)
         {
